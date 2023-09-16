@@ -427,6 +427,8 @@ Config.KeysAsItem = { --THIS FEATURE CURRENTLY ONLY SUPPORTS (QBCORE FRAMEWORK W
 ------------------------------------------------------VEHICLE WHITELIST-------------------------------------------------------
 Config.WhitelistedVehicles = { --ANY VEHICLE LISTED BELOW WILL NOT REQUIRE KEYS TO OPERATE. ADD BY SPAWN NAME OR MODEL HASH. (NOTE: ANY VEHICLE THAT THE NATIVE 'IsThisModelABicycle' RETURNS TRUE WILL AUTOMATICALLY BE WHITELISTED BY THE SCRIPT AND DOESNT NEED TO BE ADDED HERE)
     'caddy',
+    'caddy2',
+    'caddy3'
 }
 ------------------------------------------------------------------------------------------------------------------------------
 
