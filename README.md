@@ -1,6 +1,8 @@
 # mk_vehiclekeys
-Vehicle Keys System by ManKind
+# Vehicle Keys System
+# Written by ManKind 
 
-[Discord](https://discord.gg/39fNFepADG)
 
-[README.md](https://github.com/xManKindx/mk_vehiclekeys/files/10504737/README.md)
+[Documentation](https://mankind-scripts.gitbook.io/documentation/scripts/vehicle-keys)
+
+[Support](https://discord.gg/39fNFepADG)
