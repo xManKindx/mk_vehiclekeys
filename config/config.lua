@@ -1,43 +1,13 @@
 Config = {}
-CustomFramework = {}
 
-Config.UseCustomFramework = false --SET TO TRUE TO LOAD CUSTOM FRAMEWORK AND FOLLOW THE SETUP GUIDE IN README OR COMMENTS INSIDE framework_cl.lua / framework_sv.lua / inventory.lua - Leave false to integrate QB/ESX automatically
-Config.ConsoleLogging = true --TRUE DISPLAYS SCRIPT LOGGING INFO IN F8 AND SERVER CONSOLE
 Config.ToggleLockSpamDelay = 1500 --DELAY IN MS THE PLAYER MUST WAIT TO TOGGLE LOCKING/UNLOCKING A VEHICLE
+
+Config.NotifyOnKeyAdd = true --TRUE DISPLAYS NOTIFICATION WHEN KEYS ARE GIVEN TO THE PLAYER
 
 ------------------------------------------------------DISPATCH----------------------------------------------------------------
 Config.PoliceNotify = {
     Chance = 50, --Number 0-100. Lower the number less chance to alert. 0 = will never alert. 100 = will always alert.
     AlertTimeout = 15, --Seconds between alert notifications (Prevents spam alerts)
-    UseCustomDispatchAlert = false, --FALSE = USE DEFAULT FRAMEWORK DISPATCH NOTIFICATIONS / TRUE = SETUP EVENT FOR CUSTOM DISPATCH SCRIPT (EXAMPLE: PS-DISPATCH) [**MUST BE SET TO TRUE FOR CUSTOM FRAMEWORK USE**]
-    CustomAlertFunction = function(Vehicle, Plate, Coords, VehName) --** CLIENT ** CODE BELOW THIS LINE TO SETUP YOUR CUSTOM DISPATCH ALERT
-        --Custom Code Here to setup your police alert when a vehicle is hotwired/lockpicked
-        ---@param Vehicle number Vehicle entity
-        ---@param Plate string Vehicle plate text
-        ---@param Coords vector3 Vehicle coordinates
-        ---@param VehName string Vehicle make/model
-
-        --TriggerServerEvent('police:server:policeAlert', 'Attempted Vehicle Theft') --QBCORE EXAMPLE
-        --exports['ps-dispatch']:VehicleTheft(Vehicle) --PS-DISPATCH EXAMPLE
-    end
-}
-------------------------------------------------------------------------------------------------------------------------------
-
-------------------------------------------------------NOTIFICATIONS-----------------------------------------------------------
-Config.Notify = { 
-    UseCustom = false, --FALSE = DEFAULT NOTIFY WILL BE YOUR FRAMEWORKS NOTIFY SYSTEM (QBCore:Notify / esx:showNotification) / TRUE = CUSTOM NOTIFY SCRIPT (OX_LIB / T-NOTIFY / ECT) (VIEW README FILE FOR DETAILED SETUP INFO)
-    CustomClientNotifyFunction = function(Data) --**CLIENT SIDE CODE**
-        ---@param Data table: { Message string, Type string (error, success, primary), Duration number }
-        
-        --TriggerEvent('QBCore:Notify', Data.Message, Data.Type, Data.Duration) --QBCORE EXAMPLE
-    end,
-    CustomServerNotifyFunction = function(PlayerSource, Data) --**SERVER SIDE CODE** SAME AS ABOVE EXCEPT PASSES THE SOURCE TO SEND THE NOTIFICATION TO FROM THE SERVER
-        ---@param PlayerSource number Server id of the player
-        ---@param Data table: { Message string, Type string (error, success, primary), Duration number }
-
-        --TriggerClientEvent('QBCore:Notify', PlayerSource, Data.Message, Data.Type, Data.Duration) --QBCORE EXAMPLE
-    end,
-    NotifyOnKeyAdd = true --If set to true the client will get a Notify message when keys are given to them. Set to false if you do notifications manually to prevent duplicate keys given notifications
 }
 ------------------------------------------------------------------------------------------------------------------------------
 
@@ -51,63 +21,38 @@ Config.Licenses = {
     Helicopter = {
         CheckLicense = false, --will run the below function to check for a heli license
         CheckLicenseFunction = function(cb)
-            --CUSTOM CHECK FOR HELICOPTER LICENSE
-            --CLIENT SIDE CHECK
-            --IF HAS LICENSE THEN cb(true)
-            --IF NOT HAS LICENSE THEN cb(false)
+            --CUSTOM CLIENT SIDE CHECK FOR HELICOPTER LICENSE
+            -- cb(true) IF HAS LICENSE / cb(false) IF NOT
         end,
-        CheckJob = true, --IF TRUE WILL CHECK PLAYERS JOB AGAINST JOBS LISTED IN [AuthorizedJobs]. IF TRUE WILL GIVE PLAYER KEYS TO HELICOPTER WHEN THEY SIT IN THE DRIVER SEAT. WILL NOT BE USED FOR CUSTOM FRAMEWORK
+        CheckJob = true, --IF TRUE WILL CHECK PLAYERS JOB AGAINST JOBS LISTED IN [AuthorizedJobs]. IF TRUE WILL GIVE PLAYER KEYS TO HELICOPTER WHEN THEY SIT IN THE DRIVER SEAT.
         AuthorizedJobs = {'police', 'ambulance'}, --IF CHECKJOB = TRUE AND PLAYER HAS A JOB LISTED IN THIS TABLE THEY WILL BE GIVEN HELICOPTER KEYS WHEN THEY SIT IN THE DRIVER SEAT
-        UseCustomJobCheck = false, --FALSE = USE DEFAULT JOB CHECK HARDCODED INTO THE SCRIPT (QB/ESX) / TRUE = USE A CUSTOM FUNCTION BELOW TO CHECK FOR JOBS (USEFULL IF YOU HAVE CHANGED YOUR JOB STRUCTURE FROM DEFAULT QB/ESX OR USING CUSTOM FRAMEWORK)
+        UseCustomJobCheck = false, --FALSE = USE DEFAULT JOB CHECK / TRUE = USE A CUSTOM FUNCTION BELOW TO CHECK FOR JOBS (USEFULL IF YOU HAVE CHANGED YOUR JOB STRUCTURE)
         CheckJobFunction = function(cb) --CUSTOM FUNCTION TO CHECK PLAYERS JOB ** CLIENT SIDE ** cb(true) for the job to give keys automatically when sitting in driver seat of a helicopter. cb(false) must be setup properly for the script to not hang waiting for a result.
-            --CUSTOM CHECK FOR JOB ACCESS TO FLY HELICOPTERS
-            --IF HAS JOB THEN cb(true)
-            --IF NOT HAS JOB THEN cb(false)
+            --CUSTOM CLIENT SIDE CHECK FOR JOB ACCESS TO FLY HELICOPTERS
+            --cb(true) IF HAS JOB / cb(false) IF NOT
 
-            --[[ QBCore.Functions.GetPlayerData(function(PlayerData) --QBCORE EXAMPLE ON HOW TO SETUP THIS FUNCTION
-                if PlayerData then 
-                    if (PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance') then
-                        cb(true)
-                    else
-                        cb(false)
-                    end
-                else
-                    cb(false)
-                end
-            end) ]]
         end,
-        CanHotwire = false, --TRUE = PLAYERS CAN HOTWIRE A HELICOPTER 
-        CanLockpick = false --TRUE = PLAYERS CAN LOCKPICK A HELICOPTER
+        CanHotwire = false, --TRUE = PLAYERS CAN HOTWIRE HELICOPTERS 
+        CanLockpick = false --TRUE = PLAYERS CAN LOCKPICK HELICOPTERS
     },
     Plane = { --ALL FUNCTIONS BELOW ARE THE EXACT SAME SET AS HELICOPTERS ABOVE EXCEPT THEY ONLY APPLY TO PLANES
         CheckLicense = false,
         CheckLicenseFunction = function(cb)
-            --CUSTOM CHECK FOR PLANE LICENSE
-            --IF HAS LICENSE THEN cb(true)
-            --IF NOT HAS LICENSE THEN cb(false)
+            --CUSTOM CLIEND SIDE CHECK FOR PLANE LICENSE
+            -- cb(true) IF HAS LICENSE / cb(false) IF NOT
 
         end,
         CheckJob = false,
         AuthorizedJobs = {'police'},
         UseCustomJobCheck = false,
         CheckJobFunction = function(cb)
-            --CUSTOM CHECK FOR JOB ACCESS TO FLY PLANES
+            --CUSTOM CLIENT SIDE CHECK FOR JOB ACCESS TO FLY PLANES
             --IF HAS JOB THEN cb(true)
-            --IF NOT HAS JOB THEN cb(false)
-            --[[ QBCore.Functions.GetPlayerData(function(PlayerData) --QBCORE EXAMPLE ON HOW TO SETUP THIS FUNCTION
-                if PlayerData then 
-                    if (PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance') then
-                        cb(true)
-                    else
-                        cb(false)
-                    end
-                else
-                    cb(false)
-                end
-            end) ]]
+            --cb(true) IF HAS JOB / cb(false) IF NOT
+            
         end,
-        CanHotwire = false, --TRUE = PLAYERS CAN HOTWIRE A PLANE 
-        CanLockpick = false --TRUE = PLAYERS CAN LOCKPICK A PLANE
+        CanHotwire = false, --TRUE = PLAYERS CAN HOTWIRE PLANES
+        CanLockpick = false --TRUE = PLAYERS CAN LOCKPICK PLANES
     }
 }
 ------------------------------------------------------------------------------------------------------------------------------
@@ -141,10 +86,10 @@ Config.Lockpick = {
         }
     },
     LockpickItem = 'lockpick', --LOCKPICK ITEM THAT WHEN USED INITIATES LOCKPICKING VEHICLE DOORS OR IGNITIONS
-    UseQBLockpickEvent = true, --IF USING QBCORE WILL USE 'lockpicks:UseLockpick' EVENT SO OTHER SCRIPTS DONT BREAK. SET TO FALSE TO HAVE THIS SCRIPT REGISTER AN EVENT. ONLY APPLYS TO QBCORE. OTHER FRAMEWORK CAN IGNORE THIS.
+    UseExistingLockpickEvent = false,
     UseAdvancedLockpick = true, --TRUE = SETUP ADVANCED LOCKPICK ITEM / FALSE = DONT USE ADVANCED
     AdvancedLockpickItem = 'advancedlockpick', --ADVANCED LOCKPICK ITEM THAT WHEN USED INITIATES LOCKPICKING VEHICLE DOORS OR IGNITIONS (BETTER PROGRESS TIME/EASIER MINI GAME COMPARED TO REGULAR LOCKPICK)
-    UseQBAdvancedLockpickEvent = true, --IF USING QBCORE WILL USE 'lockpicks:UseLockpick' EVENT SO OTHER SCRIPTS DONT BREAK. SET TO FALSE TO HAVE THIS SCRIPT REGISTER AN EVENT. ONLY APPLYS TO QBCORE. OTHER FRAMEWORK CAN IGNORE THIS.
+    UseExistingAdvancedLockpickEvent = false,
     Game = { --SETUP GAMES TO USE FOR LOCKPICKING
         VehicleDoors = {
             UseGame = false, --TRUE = USE CUSTOM MINIGAME TO LOCKPICK VEHICLE DOORS / FALSE = USE DEFAULT PROGRESS BAR
@@ -162,8 +107,8 @@ Config.Lockpick = {
                 end ]]
             end,
             StopGame = function()
-                --No stop function for this game so just leave it empty
                 --IF GAME HAS A STOPGAME FUNCTION OR EXPORT PLACE IT HERE. THIS WOULD BE CALLED IF THE PLAYER WAS KILLED/MOVED AWAY WHILE DOING THE MINI GAME
+                --if lib.skillCheckActive() then lib.cancelSkillCheck() end
             end
         },
         Ignition = {
@@ -185,30 +130,34 @@ Config.Lockpick = {
     }
 }
 
-Config.LockpickIgnitionEvent = function(Vehicle, Plate, Coords) --CUSTOM EVENT TO TRIGGER CLIENT SIDE AFTER A SUCCESSFULL VEHICLE ENGINE LOCKPICK
-    ---@param Vehicle number Vehicle entity
-    ---@param Plate string Vehicle plate text
-    ---@param Coords vector3 Vehicle coordinates
+---@param vehicle number Vehicle entity
+---@param plate string Vehicle plate text
+---@param coords vector3 Vehicle coordinates
+Config.LockpickIgnitionEvent = function(vehicle, plate, coords)
+    --CUSTOM EVENT TO TRIGGER CLIENT SIDE AFTER A SUCCESSFULL VEHICLE ENGINE LOCKPICK
 
 end
 
-Config.LockpickDoorEvent = function(Vehicle, Plate, Coords) --CUSTOM EVENT TO TRIGGER CLIENT SIDE AFTER A SUCCESSFULL VEHICLE DOOR LOCKPICK
-    ---@param Vehicle number Vehicle entity
-    ---@param Plate string Vehicle plate text
-    ---@param Coords vector3 Vehicle coordinates
+---@param vehicle number Vehicle entity
+---@param plate string Vehicle plate text
+---@param coords vector3 Vehicle coordinates
+Config.LockpickDoorEvent = function(vehicle, plate, coords) 
+    --CUSTOM EVENT TO TRIGGER CLIENT SIDE AFTER A SUCCESSFULL VEHICLE DOOR LOCKPICK
 
 end
 
-Config.LockpickIgnitionCustomAuth = function(Vehicle, Plate) --CUSTOM EVENT TO CHECK IF A PLAYER IS AUTHORIZED TO LOCKPICK A SPECIFIC VEHICLE. MUST RETURN TRUE OR FALSE
-    ---@param Vehicle number Vehicle entity
-    ---@param Plate string Vehicle plate text
+---@param vehicle number Vehicle entity
+---@param plate string Vehicle plate text
+Config.LockpickIgnitionCustomAuth = function(vehicle, plate)
+    --CUSTOM EVENT TO CHECK IF A PLAYER IS AUTHORIZED TO LOCKPICK A SPECIFIC VEHICLE. MUST RETURN TRUE OR FALSE
     
     return true
 end
 
-Config.LockpickDoorCustomAuth = function(Vehicle, Plate) --CUSTOM EVENT TO CHECK IF A PLAYER IS AUTHORIZED TO LOCKPICK A SPECIFIC VEHICLE. MUST RETURN TRUE OR FALSE
-    ---@param Vehicle number Vehicle entity
-    ---@param Plate string Vehicle plate text
+---@param vehicle number Vehicle entity
+---@param plate string Vehicle plate text
+Config.LockpickDoorCustomAuth = function(vehicle, plate) 
+    --CUSTOM EVENT TO CHECK IF A PLAYER IS AUTHORIZED TO LOCKPICK A SPECIFIC VEHICLE. MUST RETURN TRUE OR FALSE
     
     return true
 end
@@ -252,16 +201,18 @@ Config.HotwireGame = {
     end
 }
 
-Config.HotwireEvent = function(Vehicle, Plate, Coords) --CUSTOM EVENT TO TRIGGER CLIENT SIDE AFTER A SUCCESSFULL VEHICLE ENGINE HOTWIRE
-    ---@param Vehicle number Vehicle entity
-    ---@param Plate string Vehicle plate text
-    ---@param Coords vector3 Vehicle coordinates
+---@param vehicle number Vehicle entity
+---@param plate string Vehicle plate text
+---@param coords vector3 Vehicle coordinates
+Config.HotwireEvent = function(vehicle, plate, coords) 
+    --CUSTOM EVENT TO TRIGGER CLIENT SIDE AFTER A SUCCESSFULL VEHICLE ENGINE HOTWIRE
 
 end
 
-Config.HotwireCustomAuth = function(Vehicle, Plate) --CUSTOM EVENT TO CHECK IF A PLAYER IS AUTHORIZED TO HOTWIRE A SPECIFIC VEHICLE. MUST RETURN TRUE OR FALSE
-    ---@param Vehicle number Vehicle entity
-    ---@param Plate string Vehicle plate text
+---@param vehicle number Vehicle entity
+---@param plate string Vehicle plate text
+Config.HotwireCustomAuth = function(vehicle, plate)
+    --CUSTOM EVENT TO CHECK IF A PLAYER IS AUTHORIZED TO HOTWIRE A SPECIFIC VEHICLE. MUST RETURN TRUE OR FALSE
 
     return true
 end
@@ -315,23 +266,25 @@ Config.Commands = {
 ------------------------------------------------------NPC VEHICLES------------------------------------------------------------
 Config.NpcVehicles = { --NONE OF THE CHECKS BELOW APPLY TO PLAYER OWNED OR STOLEN NPC VEHICLES.
     Driving = {
-        CanBeLocked = true, --TRUE = NPC VEHICLE DOORS CAN BE LOCKED WHILE THEY ARE DRIVING / FALSE = ALWAYS UNLOCKED
-        LockedChance = 50, --NUMBER 1 TO 100. HIGHER NUMBER IS HIGHER CHANCE TO BE LOCKED. 100 = ALWAYS LOCKED.
+        CheckLocks = true, --SET TO FALSE IF YOU DON'T WANT THE SCRIPT TO CHANGE DOORLOCKS FOR NPC DRIVEN VEHICLES
+        LockedChance = 0, --NUMBER 0 TO 100. HIGHER NUMBER IS HIGHER CHANCE TO BE LOCKED. 100 = ALWAYS LOCKED. 0 = ALWAYS UNLOCKED.
     },
     Parked = { --USING THIS FEATURE WILL NOT ALLOW YOU TO BREAK VEHICLE WINDOWS TO UNLOCK THE DOOR. VEHICLE WILL EITHER BE UNLOCKED OR LOCKED AND REQUIRE YOU TO LOCKPICK IT OPEN.
-        CheckParkedVehicleLocks = true, --SET TO FALSE IF YOU DON'T WANT THE SCRIPT TO CHANGE DOORLOCKS FOR PARKED NPC VEHICLES
-        LockedChance = 50, --NUMBER 0 TO 100. HIGHER NUMBER IS HIGHER CHANCE TO BE LOCKED. 100 = ALWAYS LOCKED. 0 = NEVER LOCKED.
+        CheckLocks = true, --SET TO FALSE IF YOU DON'T WANT THE SCRIPT TO CHANGE DOORLOCKS FOR PARKED NPC VEHICLES
+        LockedChance = 100, --NUMBER 0 TO 100. HIGHER NUMBER IS HIGHER CHANCE TO BE LOCKED. 100 = ALWAYS LOCKED. 0 = ALWAYS UNLOCKED.
     },
     Carjacking = {
         Enabled = true, --TRUE = ALLOW CARJACKING WITH A WEAPON / FALSE = DISABLED
         VehicleBlacklist = { --ANY VEHICLE LISTED BELOW WILL NOT ALLOW CARJACKING. ADD BY SPAWN NAME OR MODEL HASH.
             'stockade'
         },
-        SuccessFunction = function(Vehicle, Plate, Coords, VehName) --CLIENT SIDE FUNCTION THAT IS CALLED WHEN PLAYER SUCCESSFULLY CARJACKS AN NPC
-            ---@param Vehicle number Vehicle entity
-            ---@param Plate string Vehicle plate text
-            ---@param Coords vector3 Vehicle coordinates
-            ---@param VehName string Vehicle make/model
+
+        ---@param vehicle number Vehicle entity
+        ---@param plate string Vehicle plate text
+        ---@param coords vector3 Vehicle coordinates
+        ---@param vehName string Vehicle make/model
+        SuccessFunction = function(vehicle, plate, coords, vehName)
+            --CLIENT SIDE FUNCTION THAT IS CALLED WHEN PLAYER SUCCESSFULLY CARJACKS AN NPC
 
         end
     },
@@ -341,11 +294,13 @@ Config.NpcVehicles = { --NONE OF THE CHECKS BELOW APPLY TO PLAYER OWNED OR STOLE
         VehicleBlacklist = { --ANY VEHICLE LISTED BELOW WILL NOT ALLOW STEALING KEYS FROM THE DRIVER. ADD BY SPAWN NAME OR MODEL HASH.
             'stockade'
         },
-        SuccessFunction = function(Vehicle, Plate, Coords, VehName) --CLIENT SIDE FUNCTION THAT IS CALLED WHEN PLAYER SUCCESSFULLY TAKES AN NPC DRIVERS KEYS
-            ---@param Vehicle number Vehicle entity
-            ---@param Plate string Vehicle plate text
-            ---@param Coords vector3 Vehicle coordinates
-            ---@param VehName string Vehicle make/model
+
+        ---@param vehicle number Vehicle entity
+        ---@param plate string Vehicle plate text
+        ---@param coords vector3 Vehicle coordinates
+        ---@param vehName string Vehicle make/model
+        SuccessFunction = function(vehicle, plate, coords, vehName)
+            --CLIENT SIDE FUNCTION THAT IS CALLED WHEN PLAYER SUCCESSFULLY TAKES AN NPC DRIVERS KEYS
 
         end
     }
@@ -357,13 +312,6 @@ Config.KeysAsItem = { --THIS FEATURE CURRENTLY ONLY SUPPORTS (QBCORE FRAMEWORK W
     PlayerOwned = {
         Enabled = false, --TRUE = PLAYER VEHICLES REQUIRE A PHYSICAL ITEM / FALSE = DISABLED
         ItemName = 'carkey',
-        Database = {
-            Custom = false, --FALSE WILL USE DEFAULT DB TABLES FOR YOUR FRAMEWORK (QB/ESX). SET TRUE IF YOU USE DIFFERENT VEHICLE TABLES FOR DATABASE
-            OwnedVehicleTable = 'player_vehicles', --QB EXAMPLE
-            PlateField = 'plate', --QB EXAMPLE
-            FakePlateField = 'fakeplate', --QB EXAMPLE
-            IdentifierField = 'citizenid', --QB EXAMPLE
-        },
         CanHotwire = false, --TRUE = CAN HOTWIRE PLAYER OWNED VEHICLES / FALSE = CANNOT HOTWIRE PLAYER OWNED VEHICLES
         CanLockpickDoor = false, --TRUE = CAN LOCKPICK PLAYER OWNED VEHICLE DOORS / FALSE = CANNOT LOCKPICK PLAYER OWNED VEHICLE DOORS
         CanLockpickIgnition = false, --TRUE = CAN LOCKPICK PLAYER OWNED VEHICLE IGNITIONS / FALSE = CANNOT LOCKPICK PLAYER OWNED VEHICLE IGNITIONS
@@ -428,7 +376,7 @@ Config.KeysAsItem = { --THIS FEATURE CURRENTLY ONLY SUPPORTS (QBCORE FRAMEWORK W
 Config.WhitelistedVehicles = { --ANY VEHICLE LISTED BELOW WILL NOT REQUIRE KEYS TO OPERATE. ADD BY SPAWN NAME OR MODEL HASH. (NOTE: ANY VEHICLE THAT THE NATIVE 'IsThisModelABicycle' RETURNS TRUE WILL AUTOMATICALLY BE WHITELISTED BY THE SCRIPT AND DOESNT NEED TO BE ADDED HERE)
     'caddy',
     'caddy2',
-    'caddy3'
+    'caddy3',
 }
 ------------------------------------------------------------------------------------------------------------------------------
 
@@ -454,13 +402,13 @@ Config.DisableAccelerateVehicleStart = true --TRUE = ENGINE WILL NOT START WHEN 
 ------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------QB-VEHICLEKEYS SNIPPET--------------------------------------------------
-RegisterNetEvent('vehiclekeys:client:SetOwner', function(Plate)
-    local plate = Utils:RemoveTrailSpaces(Plate)
+RegisterNetEvent('vehiclekeys:client:SetOwner', function(vehiclePlate)
+    local plate = utils:removeTrailSpaces(vehiclePlate)
     Wait(250) --Giving vehicle time to be spawned and plate set. Increase if having issues.
     local vehicles = GetGamePool('CVehicle')
     if vehicles then 
         for i = 1, #vehicles, 1 do 
-            if Utils:RemoveTrailSpaces(GetVehicleNumberPlateText(vehicles[i])) == plate then 
+            if utils:removeTrailSpaces(GetVehicleNumberPlateText(vehicles[i])) == plate then 
                 exports['mk_vehiclekeys']:AddKey(vehicles[i])
                 break
             end
