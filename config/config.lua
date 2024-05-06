@@ -404,6 +404,8 @@ Config.DisableAccelerateVehicleStart = true --TRUE = ENGINE WILL NOT START WHEN 
 ------------------------------------------------------VEHICLE EXITING---------------------------------------------------------
 Config.LeaveDoorOpen = true --TRUE = HOLDING DOWN 'F' KEY WILL EXIT THE VEHICLE AND LEAVE THE DRIVER DOOR OPEN / FALSE = WILL ALWAYS SHUT DOOR
 Config.LeaveEngineRunning = false --TRUE = LEAVE ENGINE RUNNING AFTER VEHICLE EXIT IF IT WAS ON / FALSE = ALWAYS SHUT OFF ENGINE ON EXIT (VEHICLE WILL SHUT OFF IF A PLAYER WITHOUT KEYS ENTERS THE DRIVER SEAT)
+Config.DisableLeaveIfLocked = false --TRUE = PLAYER CANNOT EXIT VEHICLE IF DOORS ARE LOCKED. / FALSE = PLAYER CAN EXIT VEHICLE EVEN IF DOORS ARE LOCKED
+Config.NotifyPlayerDoorsAreLocked = true --TRUE = WILL NOTIFY PLAYER THE VEHICLE DOORS ARE LOCKED IF THEY TRY TO EXIT (ONLY IF Config.DisableLeaveIfLocked) IS ENABLED. / FALSE = WILL NOT NOTIFY PLAYER
 ------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------QB-VEHICLEKEYS SNIPPET--------------------------------------------------
