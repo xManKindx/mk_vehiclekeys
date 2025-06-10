@@ -338,6 +338,11 @@ Config.KeysAsItem = {
             debug = false, --TRUE = SHOWS POLYZONE SO YOU CAN TEST YOUR ZONE / FALSE = POLYZONE NOT SHOWN.
             PedPosition = {x = 260.88, y = -335.70, z = 45.01, h = 269.29}, --COORDS FOR THE NPC PED. BLIP USES THESE COORDS IF ENABLED
             Freeze = false, --FREEZE PED POSITION AFTER IT SPAWNS
+            Invincible = false, --PED TAKES NO DAMAGE
+            Cower = true, --PED CAN COWER BEHIND COVER
+            Targetable = true, --PED CAN BE TARGETED
+            CombatMovement = 0, --PED Combat movement type (https://docs.fivem.net/natives/?_0x4D9CA1009AFBD057)
+            Alertness = 0, --Ped Alertness (Range of 0-3)
             Hash = 1142162924, --Hash of spawnable PED (https://forge.plebmasters.de/peds)
             Blip = {
                 ShowBlip = true,
@@ -358,6 +363,11 @@ Config.KeysAsItem = {
             debug = false,
             PedPosition = {x = 215.16, y = -806.16, z = 30.79, h = 337.32}, 
             Freeze = false,
+            Invincible = false,
+            Cower = true,
+            Targetable = true,
+            CombatMovement = 0,
+            Alertness = 0,
             Hash = 1142162924,
             Blip = {
                 ShowBlip = true,
