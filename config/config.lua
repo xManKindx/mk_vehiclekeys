@@ -278,6 +278,10 @@ Config.NpcVehicles = { --NONE OF THE CHECKS BELOW APPLY TO PLAYER OWNED OR STOLE
         VehicleBlacklist = { --ANY VEHICLE LISTED BELOW WILL NOT ALLOW CARJACKING. ADD BY SPAWN NAME OR MODEL HASH.
             'stockade'
         },
+        WeaponBlacklist = { --ANY WEAPON LISTED BELOW WILL NOT ALLOW CARJACKING. ADD BY SPAWN NAME OR WEAPON HASH.
+            'weapon_fireextinguisher',
+            'weapon_petrolcan',
+        },
 
         ---@param vehicle number Vehicle entity
         ---@param plate string Vehicle plate text
